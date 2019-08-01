@@ -1164,7 +1164,7 @@
                       (-empty-queue! state)
                       (when-not (empty? queue)
                         (doseq [c queue]
-                          (when (.isMounted c)
+                          (when (aget c "__isMounted")
                             (when-let [next-props (aget (.-state c) "__om_next_cursor")]
                               (aset (.-props c) "__om_cursor" next-props)
                               (aset (.-state c) "__om_next_cursor" nil))
@@ -1290,7 +1290,7 @@
 (defn mounted?
   "Return true if the backing React component is mounted into the DOM."
   [owner]
-  (.isMounted owner))
+  (aget owner "__isMounted"))
 
 (defn set-state!
   "Takes a pure owning component, a sequential list of keys and value and
@@ -1352,4 +1352,3 @@
    {:pre [(component? owner)]}
    (let [ks (if (sequential? korks) korks [korks])]
      (-get-render-state owner ks))))
-
